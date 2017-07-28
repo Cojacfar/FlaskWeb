@@ -1,0 +1,5 @@
+from FlaskWeb import app
+
+if __name__ == '__main__':
+    from fcgi import WSGIServer
+    WSGIServer(app).run()
