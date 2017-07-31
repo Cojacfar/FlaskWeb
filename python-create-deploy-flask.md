@@ -98,7 +98,7 @@ In order to easily configure the environment on the Web Application service to c
 
 
 
-With these files, we will be able to quickly configure the Azure Web App instance once we have pushed our Git Repository to Azure.
+With these files, we will be able to quickly configure the Azure Web App instance once we have pushed our Git Repository to Azure. As part of the deployment, the Web App instance will attempt to install everything in the requirements.txt file, assuming it's on the root level.
 
 ## Flask Development
 Now we're ready to create our Flask application! For the purposes of our example, we're going to make a very simple Flask application.
@@ -166,10 +166,12 @@ def about():
 > [!NOTE]
 > Indentation is important in Python!
 
-These two files establish the package **FlaskWeb** so we can import it, and provide routing for our requests to render templates using Jinja2.
+These two files establish the package **FlaskWeb** so we can import it, and provide routing for our requests to render templates using [Jinja2](http://jinja.pocoo.org/docs/2.9/).
 
-As you may have guessed from the above code, we're going to create three pages - all based off one shared template.
+As you may have guessed from the above code, we're going to create three pages - all based off one shared template. We will place these into the *templates/* folder.
+
 *layout.html*
+
 ```xml
 <!DOCTYPE html>
 <html>
@@ -221,6 +223,85 @@ As you may have guessed from the above code, we're going to create three pages -
 </html>
 ```
 
+Inheriting from this layout template, we create three more templates that just define our basic website.
+
+*index.html*
+```XML
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Flask</h1>
+    <p class="lead">Flask is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="http://flask.pocoo.org/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            Flask gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="http://flask.pocoo.org/docs/">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>The Python Package Index is a repository of software for the Python programming language.</p>
+        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Microsoft Azure</h2>
+        <p>You can easily publish to Microsoft Azure using Python Tools for Visual Studio. Find out how you can host your application using a free trial today.</p>
+        <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+{% endblock %}
+```
+
+*about.html*
+```xml
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+<p>Use this area to provide additional information.</p>
+
+{% endblock %}
+```
+
+*contact.html*
+```XML
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052-6399<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
+
+<address>
+    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+</address>
+
+{% endblock %}
+```
+Congratulations! You've not created all the necessary files for Azure deployment.
+
+## Deployment
 
 ## Troubleshooting - Package Installation
 [!INCLUDE [web-sites-python-troubleshooting-package-installation](../../includes/web-sites-python-troubleshooting-package-installation.md)]
