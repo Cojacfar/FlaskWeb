@@ -21,7 +21,7 @@ ms.author: cofarm
 # Creating web apps with Flask in Azure
 This tutorial describes how to get started running Python with Flask in [Azure App Service Web Apps]. Web Apps provides limited free hosting and rapid deployment, and you can use Python!  As your app grows, you can switch to paid hosting, and easily integrate with other Azure service offerings.
 
-You will create an application named using the Flask web framework, a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be named FlaskWeb, and be deployed from your local Git repository.
+You will create an application named FlaskWeb using Flask,  a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be named FlaskWeb, and be deployed from your local Git repository.
 
 [!INCLUDE [create-account-and-websites-note](../../includes/create-account-and-websites-note.md)]
 
@@ -59,7 +59,29 @@ Now that your web application is launched, we can begin customizing it for Flask
 
 ## Environment
 ### Web Application Configuration Files
-Our Flask Deployment will use Fast CGI to interface with the server. In order to accomplish this, we will need to add two files. One, a FastCGI interface file. We will create this file and name it **FlaskWeb.wsgi\_app**. Copy the following code into FlaskWeb.wsgi_app within your local Github repository for this project:
+Our Flask Deployment will use Fast CGI to interface with the web application server. In order to accomplish this, we will need to add two files. First, we'll create a file that is required for every deployment type, `web.config`. This file tells the Web Application Server how we want it to actually run our program.
+
+ **web.config** file:
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <configuration>
+      <appSettings>
+      	<add key="PYTHONPATH" value="D:\home\site\wwwroot"/>
+  	    <add key="WSGI_HANDLER" value="FlaskWeb.wsgi_app"/>
+  	    <add key="WSGI_LOG" value="D:\home\LogFiles\wfastcgi.log"/>
+      </appSettings>
+      <system.webServer>
+    	<handlers>
+      		<add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\home\Python361x64\python.exe|D:\home\Python361x64\wfastcgi.py" resourceType="Unspecified" requireAccess="Script"/>
+    	</handlers>
+      </system.webServer>
+    </configuration>
+```
+
+You'll note that we declare `appSettings`, provide a `PythonPath`, and a location for the WSGI handler. Additionally, we provide a path to the `scriptProcessor` which depends on the version of Python you installed. If you are using Python361x64, you don't need to change anything here.
+
+Next, we'll create a FastCGI interface file. We've already referenced this file's location in the config. We will create this file and name it **FlaskWeb.wsgi\_app**. Copy the following code into FlaskWeb.wsgi_app within your local Github repository for this project:
+
 ```python
 def wsgi_app(environ, start_response):
     status = '200 OK'
@@ -73,44 +95,24 @@ if __name__ == '__main__':
     httpd.serve_forever()
 ```
 
-Next we'll add a web.config file to your repository to tell Azure how your application is being run. Copy this XML into your **web.config** file:
-```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <configuration>
-      <appSettings>
-    	<add key="PYTHONPATH" value="D:\home\site\wwwroot"/>
-	    <add key="WSGI_HANDLER" value="FlaskWeb.wsgi_app"/>
-	    <add key="WSGI_LOG" value="D:\home\LogFiles\wfastcgi.log"/>
-      </appSettings>
-      <system.webServer>
-    	<handlers>
-      		<add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\home\Python361x64\python.exe|D:\home\Python361x64\wfastcgi.py" resourceType="Unspecified" requireAccess="Script"/>
-    	</handlers>
-      </system.webServer>
-    </configuration>
-```
-This file references the specific file path that you have setup. If you weren't using Python3.6.1 then you will need to change the paths that use that folder - such as the scriptProcessor argument.
-
-
-
-In order to easily configure the environment on the Web Application service to contain our dependencies, we will use a requirements.txt file to have the Pip installation installed with Python take care of the packages our application needs. The below code should be copied into a requirements.txt file in your repository:
+In order to easily configure the environment on the Web Application service to contain our dependencies, we will use a `requirements.txt` file to have PIP which is installed with the Python extension take care of the packages our application needs. The below code should be copied into a requirements.txt file in your repository:
+```XML
     click==6.7
     Flask==0.12.2
     itsdangerous==0.24
     Jinja2==2.9.6
     MarkupSafe==1.0
     Werkzeug==0.12.2
+```
 
-
-
-With these files, we will be able to quickly configure the Azure Web App instance once we have pushed our Git Repository to Azure.
+With these files, we will be able to quickly configure the Azure Web App instance once we have pushed our Git Repository to Azure by running a `pip install requirements.txt`.
 
 ## Flask Development
 Now we're ready to create our Flask application! For the purposes of our example, we're going to make a very simple Flask application.
 
 Flask can be setup in a lot of different ways, and here we'll be making a very minimal application that can be built upon easily. This application doesn't utilize a database or any other external functionality, but all of that can be easily added later!
 
-In the root of your Git repository (along with your configuration files), create a *FlaskWeb* folder. Underneath this folder, you should create a *static* and *templates* folder to look like this:
+In the root of your Git repository (along with your configuration files), create a *FlaskWeb* folder. Underneath this folder, you should create *static* and *templates* folders to look like this:
 ```XML
     /FlaskWeb
     	/Static
@@ -120,12 +122,12 @@ In the root of your Git repository (along with your configuration files), create
     FlaskWeb.wsgi_app
 ```
 
-In the FlaskWeb folder we're going to create two files - one to initialize our app and one to define it's actions. Create **__init__.py ** (two underscores on each side) and **views.py**.
+In the **FlaskWeb** folder we're going to create two files - one to initialize our app and one to define how to handle specific URLs - called *routing*. Create **\_\_init__.py ** (two underscores on each side) and **views.py**.
 
 *\_\_init__.py*
 ```python
 """
-The flask application package.
+The flask application package. This is where we initialize Flask
 """
 from flask import Flask
 app = Flask(__name__)
@@ -178,7 +180,7 @@ def about():
 
 These two files establish the package **FlaskWeb** so we can import it, and provide routing for our requests to render templates using [Jinja2].
 
-As you may have guessed from the above code, we're going to create three pages - all based off one shared template. We will place these into the *templates/* folder.
+As you may have guessed from the above code, we're going to create three pages - all based off one shared template. These four files - **layout.html**, **index.html**, **about.html**, and **contact.html** - will be placed into the *templates/* folder.
 
 *layout.html*
 
@@ -309,7 +311,7 @@ Inheriting from this layout template, we create three more templates that just d
 
 {% endblock %}
 ```
-Congratulations! You've now created all the necessary files for Azure deployment.
+Congratulations! You've now created all the necessary files for deploying Flask to Azure.
 
 ## Deployment
 We'll be using Git to deploy to Azure. You will need to use the Git Shell if you're on Windows to add the remote repository that the application is deployed. You should follow our [wonderful guide](app-service-deploy-local-git.md) to get this all setup. Once your local Git repository is linked to the Azure Web App's, we can push our content. Once we push the repository, the Web App will deploy automatically.
@@ -322,13 +324,13 @@ Now that we have files in the remote environment, we can install our Python pack
 
 Now our Web App environment will have all the required Python packages for running Flask.
 
-With everything setup, we can restart our application from the **Overview** blade. Once this completes, we should be able to navigate to our Web App's URL and find our completed Flask Application!
+With everything setup, we can restart our application from the **Overview** blade. Once this completes, we should be able to navigate to our Web App's URL and find our completed Flask Application! The page is using [Bootstrap] to get styled, but you can add your own CSS in the *static* folder.
 
 ## Next Steps
 
 With your first web application deployed, you are probably thinking about ways to tinker with this project. In this tutorial, we didn't do any local deployment. Developing an application locally is a much quicker way to inspect your changes, and ensure you don't disrupt a functioning website.
 
-The suggested method for this is [Virtual Environments]. With PIP and a Virtual Environment, we can create the requirements.txt and use it to keep the remote Azure Application running the same dependencies as the local one. You can then run Flask's [Development Server] to preview your web application.
+The suggested method for this is [Virtual Environments]. With PIP and a Virtual Environment, we can create the requirements.txt and use it to keep the remote Azure Application running the same dependencies as the local one. You can then run Flask's [Development Server] to preview your web application locally before updating it in Azure.
 
 Follow these links to learn more about Flask and Python Tools for Visual Studio:
 
@@ -355,3 +357,4 @@ For more information, see also the [Python Developer Center](/develop/python/).
 [Virtual Environments]: https://virtualenv.pypa.io/en/stable/
 [Development Server]: http://flask.pocoo.org/docs/0.12/server/]
 [Jinja2]: http://jinja.pocoo.org/docs/2.9/
+[Bootstrap]: http://getbootstrap.com/
