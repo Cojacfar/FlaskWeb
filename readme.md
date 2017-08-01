@@ -21,7 +21,7 @@ ms.author: cofarm
 # Creating web apps with Flask in Azure
 This tutorial describes how to get started running Python with Flask in [Azure App Service Web Apps]. Web Apps provides limited free hosting and rapid deployment, and you can use Python!  As your app grows, you can switch to paid hosting, and easily integrate with other Azure service offerings.
 
-You will create an application named FlaskWeb using Flask,  a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be named FlaskWeb, and be deployed from your local Git repository.
+You will create an application named FlaskWeb using Flask, a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be deployed from your local Git repository.
 
 [!INCLUDE [create-account-and-websites-note](../../includes/create-account-and-websites-note.md)]
 
