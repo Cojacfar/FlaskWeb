@@ -19,9 +19,9 @@ ms.author: cofarm
 
 ---
 # Creating web apps with Flask in Azure
-This tutorial describes how to get started running Python with Flask in [Azure App Service Web Apps]. Web Apps provides limited free hosting and rapid deployment, and you can use Python!  As your app grows, you can switch to paid hosting, and easily integrate with other Azure service offerings.
+This tutorial describes how to get started running Python with Flask in [Azure App Service Web Apps]. You can sign up for a [free trial] to utilize a $200 credit for running any of the services on Azure. Azure provides unlimited scaling, easy integration with other Microsoft Services, and a multitude of development options including Python!
 
-You will create an application named FlaskWeb using Flask, a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be deployed from your local Git repository.
+We will be creating an application named *FlaskWeb* using Flask, a popular lightweight framework for Python web development. Other popular choices include Django and Bottle. We suggest reading our comprehensive guide on [Managing Python on Azure App Service], but this tutorial will cover the required portions to get your Flask application running. This application will be deployed from your local Git repository.
 
 [!INCLUDE [create-account-and-websites-note](../../includes/create-account-and-websites-note.md)]
 
@@ -346,15 +346,16 @@ For more information, see also the [Python Developer Center](/develop/python/).
 
 <!--External Link references-->
 [python.org]: http://www.python.org/
-[Git for Windows]: http://msysgit.github.io/
+[Git for Windows]: https://git-for-windows.github.io/
 [GitHub for Windows]: https://windows.github.com/
 [Python Tools for Visual Studio]: http://aka.ms/ptvs
 [Visual Studio]: http://www.visualstudio.com/
 [Python Tools for Visual Studio Documentation]: http://aka.ms/ptvsdocs
 [Flask Documentation]: http://flask.pocoo.org/
-[Azure App Service Web Apps]: https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-overview
+[Azure App Service Web Apps]: https://docs.microsoft.com/azure/app-service-web/app-service-web-overview
 [Managing Python on Azure App Service]: https://docs.microsoft.com/visualstudio/python/managing-python-on-azure-app-service#configuring-your-site
 [Virtual Environments]: https://virtualenv.pypa.io/en/stable/
 [Development Server]: http://flask.pocoo.org/docs/0.12/server/]
 [Jinja2]: http://jinja.pocoo.org/docs/2.9/
 [Bootstrap]: http://getbootstrap.com/
+[free trial]: https://azure.microsoft.com/en-us/offers/ms-azr-0044p/
