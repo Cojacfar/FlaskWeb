@@ -314,10 +314,10 @@ Inheriting from this layout template, we create three more templates that just d
 Congratulations! You've now created all the necessary files for deploying Flask to Azure.
 
 ## Deployment
-We'll be using Git to deploy to Azure. You will need to use the Git Shell if you're on Windows to add the remote repository that the application is deployed. You should follow our [wonderful guide](app-service-deploy-local-git.md) to get this all setup. Once your local Git repository is linked to the Azure Web App's, we can push our content. Once we push the repository, the Web App will deploy automatically.
+We'll be using Git to deploy to Azure. You will need to use the Git Shell if you're on Windows to add the remote repository that the application is deployed. You should follow our [excellent guide](app-service-deploy-local-git.md) to get this all setup. Once your local Git repository is linked to the Azure Web App's, we can push our content. Once we push the repository, the Web App will deploy automatically.
 
 ### Preparing the Remote Environment
-Now that we have files in the remote environment, we can install our Python packages. The easiest way to do this is through Kudu, which is located at `http://<your-app>.scm.azurewebsites.net/`. You can then open up the a console by selecting **Debug Console** --> **CMD**. From here, we can run PIP using the Python extension we installed.
+Now that we have files in the remote environment, we can install our Python packages. The easiest way to do this is through Kudu, which is located at `http://<your-app>.scm.azurewebsites.net/`. You can then open up the console by selecting **Debug Console** --> **CMD**. From here, we can run PIP using the Python extension we installed.
 
 1. Navigate to the folder of the Python installation where the extension was installed, which was `d:\home\python361x64` for our selected extension.
 2. Use `python.exe -m pip install --upgrade -r d:\home\site\wwwroot\requirements.txt` to install all of the packages we need.
