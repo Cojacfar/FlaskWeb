@@ -311,7 +311,7 @@ Inheriting from this layout template, we create three more templates that just d
 Congratulations! You've now created all the necessary files for deploying Flask to Azure.
 
 ## Deployment
-We'll be using Git to deploy to Azure. You will need to use the Git Shell if you're on Windows to add the remote repository that the application is deployed. You should follow our [excellent guide](app-service-deploy-local-git.md) to get this all setup. Once your local Git repository is linked to the Azure Web App's, we can push our content. Once we push the repository, the Web App will deploy automatically.
+We'll be using Git to deploy to Azure. You will need to use the Git Shell if you're on Windows to add the remote repository that the application is deployed. You should follow our [excellent guide](app-service-deploy-local-git.md) to get this all setup. Once your local Git repository is linked to the Azure Web App's, we can push our content. Once we push the repository, the Web App will deploy automatically. However, in our case this deployment will most likely fail. We will want to take care of the environment's settings now. 
 
 ### Preparing the Remote Environment
 Now that we have files in the remote environment, we can install our Python packages. The easiest way to do this is through Kudu, which is located at `http://<your-app>.scm.azurewebsites.net/`. You can then open up the console by selecting **Debug Console** --> **CMD**. From here, we can run PIP using the Python extension we installed.
