@@ -33,13 +33,9 @@ We will be creating an application named *FlaskWeb* using Flask, a popular light
 ## Prerequisites
 * Windows, Mac or Linux
 * Git
-* Text/Code Editor (Notebook, atom.io, Visual Studio Code, etc.)
-* [Python Tools for Visual Studio] (PTVS) - Note: Optional, only for Visual Studio users
+* Text/Code Editor (Notebook, atom.io, [Visual Studio](https://www.visualstudio.com/), etc.)
 
 For Git on Windows, we recommend [Git for Windows] or [GitHub for Windows].  If you use Visual Studio, you can also use the integrated Git support. You will need to create a local Git repository that we will later use to deploy your Web App. For this example, we're naming the repository **FlaskWeb**.
-
-We also recommend installing [Python Tools for Visual Studio], which may have been included with your Visual Studio installation.  This is optional, but if you have [Visual Studio], including the free Visual Studio Community 2016 or Visual Studio Express 2016 for Web, then this will give you a great Python IDE.
-
 
 ## Create a Web App in the Azure Portal
 The first step in creating your app is to create the web app via the [Azure Portal](https://portal.azure.com). This can also be done with Azure CLI, but we won't be covering that here.
@@ -63,19 +59,19 @@ Our Flask Deployment will use Fast CGI to interface with the web application ser
 
  **web.config** file:
 ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <configuration>
-      <appSettings>
-      	<add key="PYTHONPATH" value="D:\home\site\wwwroot"/>
-  	    <add key="WSGI_HANDLER" value="FlaskWeb.wsgi_app"/>
-  	    <add key="WSGI_LOG" value="D:\home\LogFiles\wfastcgi.log"/>
-      </appSettings>
-      <system.webServer>
-    	<handlers>
-      		<add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\home\Python361x64\python.exe|D:\home\Python361x64\wfastcgi.py" resourceType="Unspecified" requireAccess="Script"/>
-    	</handlers>
-      </system.webServer>
-    </configuration>
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <appSettings>
+      <add key="PYTHONPATH" value="D:\home\site\wwwroot"/>
+      <add key="WSGI_HANDLER" value="app.py"/>
+      <add key="WSGI_LOG" value="D:\home\LogFiles\wfastcgi.log"/>
+  </appSettings>
+  <system.webServer>
+    <handlers>
+      <add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\home\Python361x64\python.exe|D:\home\Python361x64\wfastcgi.py" resourceType="Unspecified" requireAccess="Script"/>
+    </handlers>
+  </system.webServer>
+</configuration>
 ```
 
 You'll note that we declare `appSettings`, provide a `PythonPath`, and a location for the WSGI handler. Additionally, we provide a path to the `scriptProcessor` which depends on the version of Python you installed. If you are using Python361x64, you don't need to change anything here.
@@ -95,6 +91,9 @@ if __name__ == '__main__':
     httpd.serve_forever()
 ```
 
+> [!NOTE]
+> Indentation is important in Python!
+
 In order to easily configure the environment on the Web Application service to contain our dependencies, we will use a `requirements.txt` file to have PIP which is installed with the Python extension take care of the packages our application needs. The below code should be copied into a requirements.txt file in your repository:
 ```XML
     click==6.7
@@ -110,7 +109,7 @@ With these files, we will be able to quickly configure the Azure Web App instanc
 ## Flask Development
 Now we're ready to create our Flask application! For the purposes of our example, we're going to make a very simple Flask application.
 
-Flask can be setup in a lot of different ways, and here we'll be making a very minimal application that can be built upon easily. This application doesn't utilize a database or any other external functionality, but all of that can be easily added later!
+Flask can be set up in a lot of different ways, and here we'll be making a very minimal application that can be built upon easily. This application doesn't utilize a database or any other external functionality, but all of that can be easily added later!
 
 In the root of your Git repository (along with your configuration files), create a *FlaskWeb* folder. Underneath this folder, you should create *static* and *templates* folders to look like this:
 ```XML
@@ -175,8 +174,6 @@ def about():
     )
 ```
 
-> [!NOTE]
-> Indentation is important in Python!
 
 These two files establish the package **FlaskWeb** so we can import it, and provide routing for our requests to render templates using [Jinja2].
 
