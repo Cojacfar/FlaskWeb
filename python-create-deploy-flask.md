@@ -330,6 +330,7 @@ Follow these links to learn more about Flask and Python Tools for Visual Studio:
 * [Flask Documentation]
 * [Python Tools for Visual Studio Documentation]
 * [Flask with Docker on Azure]
+* [Python Versions on Azure]
 
 For more information, see also the [Python Developer Center](/develop/python/).
 
@@ -354,3 +355,4 @@ For more information, see also the [Python Developer Center](/develop/python/).
 [Bootstrap]: http://getbootstrap.com/
 [free trial]: https://azure.microsoft.com/en-us/offers/ms-azr-0044p/
 [Flask with Docker on Azure]: https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app
+[Python Versions on Azure]: https://blogs.msdn.microsoft.com/pythonengineering/2016/08/04/upgrading-python-on-azure-app-service/
