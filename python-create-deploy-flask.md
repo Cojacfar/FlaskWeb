@@ -63,7 +63,7 @@ Our Flask Deployment will use Fast CGI to interface with the web application ser
 <configuration>
     <appSettings>
       <add key="PYTHONPATH" value="D:\home\site\wwwroot"/>
-      <add key="WSGI_HANDLER" value="app.py"/>
+      <add key="WSGI_HANDLER" value="FlaskWeb.app"/>
       <add key="WSGI_LOG" value="D:\home\LogFiles\wfastcgi.log"/>
   </appSettings>
   <system.webServer>
@@ -76,19 +76,13 @@ Our Flask Deployment will use Fast CGI to interface with the web application ser
 
 You'll note that we declare `appSettings`, provide a `PythonPath`, and a location for the WSGI handler. Additionally, we provide a path to the `scriptProcessor` which depends on the version of Python you installed. If you are using Python361x64, you don't need to change anything here.
 
-Next, we'll create a FastCGI interface file. We've already referenced this file's location in the config. We will create this file and name it **FlaskWeb.wsgi\_app**. Copy the following code into FlaskWeb.wsgi_app within your local Github repository for this project:
+Next, we'll create a FastCGI interface file. We've already referenced this file's location in the config. We will create this file and name it **FlaskWeb.py**. Copy the following code into FlaskWeb.py within your local Github repository for this project:
 
 ```python
-def wsgi_app(environ, start_response):
-    status = '200 OK'
-    response_headers = [('Content-type', 'text/plain')]
-    start_response(status, response_headers)
-    response_body = 'Hello World'
-    yield response_body.encode()
-if __name__ == '__main__':
-    from wsgiref.simple_server import make_server
-    httpd = make_server('localhost', 5555, wsgi_app)
-    httpd.serve_forever()
+from FlaskWeb import app
+
+if __name__ = '__main__:
+    app.run()
 ```
 
 > [!NOTE]
@@ -104,6 +98,8 @@ In order to easily configure the environment on the Web Application service to c
     Werkzeug==0.12.2
 ```
 
+Additionally, we'll be utilizing PIP ourselves afterwards through Kudu. For this reason, we'll include another optional file: *.skipPythonDeployment*, note the *.* at the beginning. Create this file on the top level, and leave it empty. This will tell the Azure Web App to skip the normal Python deployment steps.
+
 With these files, we will be able to quickly configure the Azure Web App instance once we have pushed our Git Repository to Azure by running a `pip install requirements.txt`.
 
 ## Flask Development
@@ -118,7 +114,7 @@ In the root of your Git repository (along with your configuration files), create
     	/Templates
     web.config
     requirements.txt
-    FlaskWeb.wsgi_app
+    FlaskWeb.py
 ```
 
 In the **FlaskWeb** folder we're going to create two files - one to initialize our app and one to define how to handle specific URLs - called *routing*. Create **\_\_init__.py ** (two underscores on each side) and **views.py**.
@@ -321,7 +317,7 @@ Now that we have files in the remote environment, we can install our Python pack
 
 Now our Web App environment will have all the required Python packages for running Flask.
 
-With everything setup, we can restart our application from the **Overview** blade. Once this completes, we should be able to navigate to our Web App's URL and find our completed Flask Application! The page is using [Bootstrap] to get styled, but you can add your own CSS in the *static* folder.
+With everything setup, we can restart our application from the **Overview** blade. Once this completes, we should be able to navigate to our Web App's URL and find our completed Flask Application! The page is using [Bootstrap] to get styled, but you can add your own CSS or images in the *static* folder and link those in your templates.
 
 ## Next Steps
 
@@ -333,6 +329,7 @@ Follow these links to learn more about Flask and Python Tools for Visual Studio:
 
 * [Flask Documentation]
 * [Python Tools for Visual Studio Documentation]
+* [Flask with Docker on Azure]
 
 For more information, see also the [Python Developer Center](/develop/python/).
 
@@ -356,3 +353,4 @@ For more information, see also the [Python Developer Center](/develop/python/).
 [Jinja2]: http://jinja.pocoo.org/docs/2.9/
 [Bootstrap]: http://getbootstrap.com/
 [free trial]: https://azure.microsoft.com/en-us/offers/ms-azr-0044p/
+[Flask with Docker on Azure]: https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-tutorial-docker-python-postgresql-app
