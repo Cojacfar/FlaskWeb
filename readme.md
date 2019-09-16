@@ -1,23 +1,5 @@
----
-title: Creating web apps with Flask in Azure
-description: A tutorial that introduces you to running a Flask Python web app on Azure.
-services: app-service\web
-documentationcenter: python
-tags: python
-author: cojacfar
-manager:
-editor: ''
+# This Article is Out of Date # 
 
-ms.assetid: b7f4ca3a-0b52-4108-90a7-f7e07ac73da0
-ms.service: app-service-web
-ms.workload: web
-ms.tgt_pltfrm: na
-ms.devlang: python
-ms.topic: article
-ms.date: 07/18/2017
-ms.author: v-cofarm
-
----
 # Creating web apps with Flask in Azure
 This tutorial describes how to get started running Python with Flask in [Azure App Service Web Apps]. You can sign up for a [free trial] to utilize a $200 credit for running any of the services on Azure. Azure provides unlimited scaling, easy integration with other Microsoft Services, and a multitude of development options including Python!
 
